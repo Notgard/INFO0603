@@ -224,13 +224,13 @@ class Image603(object):
         for d in range(1, ht+1):
             cl.append(coul[(d*lg)-lg:d*lg])
         img = Image603(lg, ht)
-        img.coul = coul
+        img.coul = cl
         return img
             
 
 
     def demo():
-        im2 = Image603.imgDepuisBmp("Coul10a.bmp", verbose=True)
+        im2 = Image603.imgDepuisBmp("img/Coul10a.bmp", verbose=True)
         #im2.affiche()
         print(im2.dPalette())
         mb=im2.toBinaire603()
@@ -239,7 +239,8 @@ class Image603(object):
 
         im3 = Image603.fromBinaire603(mb)
         print("Image récupérée du Binaire603")
-        im3.affiche()
+        print(im3.dPalette())
+        #im3.affiche()
 
 
 
