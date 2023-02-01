@@ -17,13 +17,13 @@ class Image603(object):
             2: image ligne et verticales horizontales
             """
         if num == 0:
-            res = Image603(20, 20)
+            res = Image603(lg, ht)
         elif num == 1:
-            res = Image603(20, 20)
+            res = Image603(lg, ht)
             for ix, iy in res.iterXY():
                 res.coul[ix][iy] = (255, 255, 255)
         elif num == 2:
-            res = Image603(20, 20)
+            res = Image603(lg, ht)
             for ix, iy in res.iterXY():
                 if ix % 2 == 0:
                     if iy % 2 == 0:
@@ -204,17 +204,34 @@ class Image603(object):
 
     def toBinaire603(self):
         "renvoie un binaire603 d'après l'image"
-
-        raise NotImplementedError
+        print(self.coul)
+        lbin = [self.lg, self.ht]
+        for ix, iy in self.iterXY():
+            r, g, b = self.coul[ix][iy]
+            lbin += [r, g, b]
+        return Binaire603(lbin)
 
     def fromBinaire603(monBin):
         "renvoie une image d'après un binaire603 généré par toBinaire603"
+        lg, ht = monBin[:2]
+        coul = []
+        for ibin in range(2, len(monBin), 3):
+            rgb = []
+            for icol in range(ibin, ibin+3):
+                rgb.append(monBin[icol])
+            coul.append(tuple(rgb))
+        cl = list()
+        for d in range(1, ht+1):
+            cl.append(coul[(d*lg)-lg:d*lg])
+        img = Image603(lg, ht)
+        img.coul = coul
+        return img
+            
 
-        raise NotImplementedError
 
     def demo():
         im2 = Image603.imgDepuisBmp("Coul10a.bmp", verbose=True)
-        im2.affiche()
+        #im2.affiche()
         print(im2.dPalette())
         mb=im2.toBinaire603()
         print("Le Binaire 603")
