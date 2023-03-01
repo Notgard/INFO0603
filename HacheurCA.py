@@ -3,7 +3,7 @@ from Binaire603 import Binaire603
 
 class HacheurCA(object):
 
-    def __init__(self,nbBits=128):
+    def __init__(self, nbBits=32):
          self.nbBits=nbBits
          self.valMod=2**nbBits
     def __str__(self):
@@ -13,13 +13,11 @@ class HacheurCA(object):
 
     def __call__(self,monBinC:Binaire603):
         """Renvoie la valeur du hash"""
-        s=0
+        s = 0
         for b in monBinC:
-            s=s+b
+            s += (b << 4)
         return s % self.valMod
 
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
-
-

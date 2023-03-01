@@ -33,15 +33,16 @@ class ElemtE07(object):
         elif (isinstance(x, ElementDeZnZ)):
             self.x = x
             if isinstance(y, str):
-                if y == "Inf":
-                    self.y = y
+                if y.upper() == "INF":
+                    self.y = y.upper()
             else:
                 self.y = ElementDeZnZ(y, x.n)
             self.p = x.n
         else:
             self.x = ElementDeZnZ(x, p)
-            if (y == "Inf"):
-                self.y = y
+            if isinstance(y, str):
+                if y.upper() == "INF":
+                    self.y = y.upper()
             else:
                 self.y = ElementDeZnZ(y, p)
             self.p = p
@@ -126,7 +127,7 @@ class ElemtE07(object):
         elif other.estNeutre():
             return self
         elif self.x == other.x:
-            if self.y != other.y:
+            if self.y == other.y:
                 return ElemtE07(0, "Inf", self.p)
             return self.double()
         else:
@@ -170,15 +171,14 @@ class ElemtE07(object):
         >>> ElemtE07(15,13,17)*0
         ElemtE07(0,"INF",17)
         """
-        start = ElemtE07(0, "Inf", self.p)
-        if isinstance(other, int):
-            if other != 0:
-                start = other.double()
-                for _ in range(0, other//2):
-                    start += start.double()
-            elif other == 1:
-                return self
-        return start
+        a = self
+        total = ElemtE07(0, "Inf", self.p)
+        while (other > 0):
+            if (other % 2 == 1):
+                total += a
+            a = a.double()
+            other = other // 2
+        return total
 
     def __rmul__(self, other):
         """
@@ -187,7 +187,7 @@ class ElemtE07(object):
         >>> 2*(ElemtE07(3,"INF",47)+3*ElemtE07(3,9,47))+ElemtE07(3,"INF",47)
         ElemtE07(43,32,47)
         """
-        raise NotImplementedError
+        self.__mul__(other)
 
     def __eq__(self, other):
         """
@@ -207,6 +207,7 @@ class ElemtE07(object):
                 return False
             else:
                 return self.x == other.x and self.y == other.y and self.p == other.p
+        return True
 
     def __neg__(self):
         """
@@ -222,7 +223,9 @@ class ElemtE07(object):
         >>> ElemtE07(3,9,47)-ElemtE07(3,9,47)==0
         True
         """
-        return ElemtE07(self.x-other.x, self.y-other.y, self.p)
+        if self.x-other.x == 0 and self.y-other.y == 0:
+            return 0
+        return ElemtE07(other.x-self.x, self.y-other.y, self.p)
 
     @staticmethod
     def ordreCourbe(p=17):
@@ -408,7 +411,6 @@ class ElemtE07(object):
 
 if __name__ == "__main__":
     import doctest
-    doctest.run_docstring_examples(ElemtE07.__add__, globals())
     
-    #doctest.testmod()
+    doctest.testmod()
     #ElemtE07.demo(11)

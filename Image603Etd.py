@@ -201,10 +201,9 @@ class Image603(object):
             else:
                 dCoul[co] = (dCoul[co][0], dCoul[co][1]+1)
         return dCoul
-
+    
     def toBinaire603(self):
         "renvoie un binaire603 d'après l'image"
-        print(self.coul)
         lbin = [self.lg, self.ht]
         for ix, iy in self.iterXY():
             r, g, b = self.coul[ix][iy]
@@ -226,21 +225,18 @@ class Image603(object):
         img = Image603(lg, ht)
         img.coul = cl
         return img
-            
-
 
     def demo():
         im2 = Image603.imgDepuisBmp("img/Coul10a.bmp", verbose=True)
-        #im2.affiche()
+        im2.affiche()
         print(im2.dPalette())
         mb=im2.toBinaire603()
         print("Le Binaire 603")
         print(mb)
-
         im3 = Image603.fromBinaire603(mb)
         print("Image récupérée du Binaire603")
         print(im3.dPalette())
-        #im3.affiche()
+        im3.affiche()
 
 
 

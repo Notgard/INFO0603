@@ -76,6 +76,7 @@ class CompresseurHuffman(object):
 
 if __name__ == "__main__":
     comp = CompresseurHuffman()
+    # Exemple utilisé dans Compression Huffman, Théorie des Codes, Dunod
     binaire = Binaire603("aaaaaaaaaadddddddcccccbbbbeef")
     dico = CompresseurHuffman.dicoFrequences(binaire)
     print(dico)
@@ -86,5 +87,5 @@ if __name__ == "__main__":
     tree.printTree()
     encodeHuffman = CompresseurHuffman.dicoHuffmanDepuisArbre(tree)
     print(encodeHuffman)
-    #code = CompresseurHuffman.codageHuffman(binaire)
-    #print(code)
+    code = CompresseurHuffman.codageHuffman(binaire)
+    print(code)
