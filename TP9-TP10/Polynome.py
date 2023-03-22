@@ -147,6 +147,7 @@ class PolF2(object):
 				for i in range(other.degre() + 1):
 					# Si le bit est à 1, on décale selfInt de i bits et on l'ajoute au résultat
 					if other.data[i].rep == 1:
+						print(selfInt, i)
 						result += (selfInt << i)
 				return result
 		else:
@@ -200,6 +201,7 @@ class PolF2(object):
 
 			# On met à jour le degré de data
 			deg = data.degre()
+			print(data.data, (other * monome).data, deg, otherDegre)
 
 		# On retourne le résultat
 		r = PolF2(0)
@@ -234,22 +236,15 @@ class PolF2(object):
 		>>> str(PolF2([ElementDeZnZ(1,2), ElementDeZnZ(0,2), ElementDeZnZ(1,2)]))
 		'1 + x²'
 		"""
-		# Initialisation de la chaîne de caractères
-		retour = ""
-
-		# Pour chaque élément de la liste
-		for i in range(self.degre() + 1):
-			# Si l'élément est à 1, on l'ajoute à la chaîne de caractères avec le bon exposant
-			if self.data[i].rep == 1:
-				if i == 0:
-					retour += "1 + "
-				else:
-					retour += "x" + strExp(i) + " + "
-		if retour == "":
-			return "0"
-		else:
-			# On retourne la chaîne de caractères sans le dernier " + "
-			return retour[:-3]
+		string = ""
+		index = len(self.data) - 1
+		for i in range(self.degre()+1):
+			if index == 0:
+				string += "1"
+			elif self.data[i].rep == 1:
+				string += "X" + strExp(index) + " + "
+			index-=1
+		return string
 
 	def __repr__(self):
 		""" Représentation de l'objet """
@@ -260,7 +255,8 @@ if __name__ == "__main__":
 	import doctest
 	doctest.testmod()
 	pol1 = PolF2([1, 2, 3])
-	pol2 = PolF2([1, 2])
+	pol2 = PolF2([1, 2, 3, 4, 5])
+	print(pol1)
 	print(pol1.data)
-	print(pol2.data)
-	print((pol1 % pol2).data)
+	print((pol2 // pol1).data)
+	#print((pol1 % pol2).data)

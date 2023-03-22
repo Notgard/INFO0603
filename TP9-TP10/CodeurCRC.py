@@ -26,6 +26,7 @@ class CodeurCRC8(CodeurCA):
         Ps = PolF2(M)
 
         # Calcul de Ps * X^r
+        #print(Ps.data)
         PsXr = Ps * PolF2.monome(self.Pg.degre())
 
         # Renvoie le nombre entier correspondant au polynôme PsXr + (PsXr % Pg)

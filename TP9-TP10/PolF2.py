@@ -44,10 +44,26 @@ class PolF2(list):
     def __repr__(self):
         """Renvoie une chaine de caractère représentant le polynome"""
         string="PolF2(["
-        for mono in self:
-            if isinstance(mono, ElementDeZnZ):
-                string+=mono.__repr__()+", "
+        for pol in self:
+            if isinstance(pol, ElementDeZnZ):
+                string+=pol.__repr__()+", "
         return string[:-2] + "])"
+
+    def __str__(self):
+        """
+        Renvoie une chaine de caractère du polynome
+        """
+        string = ""
+        index = len(self) - 1
+        for pol in self:
+            if index == 0:
+                string += "1"
+            elif pol.rep == 1:
+                string += "X" + strExp(index) + " + "
+            index-=1
+        return string
+        
+
     
     @staticmethod
     def monome(degree):
@@ -101,12 +117,12 @@ class PolF2(list):
         #return PolF2(int(self)*int(other))
         if isinstance(other, PolF2):
             res = PolF2(0)
+            selfint = int(self)
             for key, pol in enumerate(other):
                 if pol.rep == 1:
                     # multiply for every 1 value bit
-                    shift = key-1 if key > 0 else key
-                    respol = int(self) << (shift)
-                    res.append(PolF2(respol))
+                    respol = (selfint << key)
+                    res = res + respol
             return res
 
     
@@ -130,10 +146,13 @@ class PolF2(list):
         #return PolF2(int(self)//int(other))
         pol = PolF2([])
         selfpol = PolF2(self)
-        while other.degre() <= selfpol.degre():
-            m = PolF2.monome(selfpol.degre() - other.degre()) 
+        otherdeg = other.degre()
+        while otherdeg <= selfpol.degre():
+            m = PolF2.monome(selfpol.degre()- otherdeg) 
             pol.append(m)
-            selfpol = selfpol + other * m
+            selfpol = selfpol + (other * m)
+        if len(pol) == 0:
+            pol.append(PolF2(0))
         return pol
     
     def __int__(self):
@@ -150,3 +169,4 @@ class PolF2(list):
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
+    print(PolF2([1, 1, 1, 0, 1]))
