@@ -7,10 +7,13 @@ class CompresseurHuffman(object):
         pass
     
     @staticmethod
-    def dicoFrequences(monBin: Binaire603 = None):
+    def dicoFrequences(monBin: Binaire603 = None, binValue=False):
         assert isinstance(monBin, Binaire603), "monBin n'est pas un Binaire603"
         lf = monBin.lFrequences()
-        lbin = sorted(list(set([strbin for strbin in monBin.toString()])))
+        if binValue:
+            lbin = list(set([bin for bin in monBin]))
+        else:
+            lbin = sorted(list(set([strbin for strbin in monBin.toString()])))
         lf = list(filter(lambda x: x != 0, lf))
         return dict(zip(lbin, lf))
 
@@ -50,14 +53,21 @@ class CompresseurHuffman(object):
         return (inv_map, map)
 
     @staticmethod
-    def codageHuffman(monBin: Binaire603):
-        huffmanString = "".join(bin for bin in monBin.toString())
-        df = CompresseurHuffman.dicoFrequences(monBin)
+    #L'encode ne fonctionne pas bien avec des valeur de Binaire603 reflétant le dictionnaire de Huffman
+    def codageHuffman(monBin: Binaire603, binValue=False):
+        if binValue:
+            huffmanString = "".join(str(bin) for bin in monBin)
+        else:
+            huffmanString = "".join(bin for bin in monBin.toString())
+        df = CompresseurHuffman.dicoFrequences(monBin, binValue)
         lp = [item for item in df.items()]
         arbre = CompresseurHuffman.arbreDepuisListe(lp)
         dico = CompresseurHuffman.dicoHuffmanDepuisArbre(arbre)
         for code, index in dico[0].items():
-            huffmanString = huffmanString.replace(index, code)
+            if binValue:
+                huffmanString = huffmanString.replace(str(index), code)
+            else:
+                huffmanString = huffmanString.replace(index, code)
         cursor = 0
         dicoRepetition = dict.fromkeys(dico[0].keys(), 0)
         codage = list(dico[1].values())
@@ -71,14 +81,35 @@ class CompresseurHuffman(object):
                     break
             cursor = offset
         dicoInv = {v: k for k, v in dicoRepetition.items()}
-        return (dicoRepetition, dicoInv)
+        return (dico, dicoRepetition, dicoInv)
+    
+    def binCode(self, monBin: Binaire603):
+        lbin = []
+        dicoHuffman = CompresseurHuffman.codageHuffman(monBin, True)[0]
+        for bin in monBin:
+            lbin.append(dicoHuffman[1][bin])
+        print("".join(lbin))
+        return Binaire603("".join(lbin))
 
+    def binDecode(self, monBinC: Binaire603):
+        lbin = []
+        dicoHuffman = CompresseurHuffman.codageHuffman(monBinC, True)[0]
+        print(CompresseurHuffman.codageHuffman(monBinC, False))
+        for bin in monBinC:
+            print(bin)
+
+    def demo():
+        monCodeur=CompresseurHuffman()
+        monBin=Binaire603([6,6,6,6,6,5,5,5,5,6,6,6,7,8,9,8,8])
+        monBinC=monCodeur.binCode(monBin)
+        monBin==monCodeur.binDecode(monBinC)
 
 if __name__ == "__main__":
     comp = CompresseurHuffman()
     # Exemple utilisé dans Compression Huffman, Théorie des Codes, Dunod
     binaire = Binaire603("aaaaaaaaaadddddddcccccbbbbeef")
-    dico = CompresseurHuffman.dicoFrequences(binaire)
+    binaire = Binaire603([5,5,5,5,5,5,5,5,6,6,6,7,7,9])
+    dico = CompresseurHuffman.dicoFrequences(binaire, True)
     print(dico)
     for item in dico.items():
         print(item)
@@ -87,5 +118,8 @@ if __name__ == "__main__":
     tree.printTree()
     encodeHuffman = CompresseurHuffman.dicoHuffmanDepuisArbre(tree)
     print(encodeHuffman)
-    code = CompresseurHuffman.codageHuffman(binaire)
+    code = CompresseurHuffman.codageHuffman(binaire, True)
     print(code)
+    res = comp.binCode(binaire)
+    print(res)
+    comp.binDecode(res)

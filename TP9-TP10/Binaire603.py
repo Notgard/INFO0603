@@ -1,6 +1,6 @@
 from math import log
 from random import randint
-from arithmetiqueDansZEtd import ElementDeZnZ
+from arithmetiqueDansZ import ElementDeZnZ
 import matplotlib.pyplot as plt
 import os
 
