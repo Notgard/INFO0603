@@ -1,4 +1,4 @@
-from arithmetiqueDansZEtd import *
+from arithmetiqueDansZ import *
 from Binaire603 import Binaire603
 
 from CodeurCA import CodeurCA
@@ -24,15 +24,15 @@ class ChiffreurAffine(CodeurCA):
         >>> (ChiffreurAffine(1, 1).binCode(Binaire603("Bonjour"))).toString()
         'Cpokpvs'
         """
-        return Binaire603([(self.a * bin + self.b).val for bin in monBinD])
+        return Binaire603([(self.a * bin + self.b).rep for bin in monBinD])
 
     def binDecode(self,monBinC:Binaire603)->Binaire603:
         """
         >>> ChiffreurAffine(5, 11).binDecode(Binaire603([1,2,3,4,255]))
         Binaire603([ 0xfe, 0xcb, 0x98, 0x65, 0x64])
         """
-        invA = self.a.inverse().val
-        return Binaire603([(invA * (bin - self.b)).val for bin in monBinC])
+        invA = self.a.inverse().rep
+        return Binaire603([(invA * (bin - self.b)).rep for bin in monBinC])
 
     def demo():
         monCodeur=ChiffreurAffine()

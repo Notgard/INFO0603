@@ -12,11 +12,11 @@ Chiffre4.TXT : ???
 """
 
 def decryptDecalageOrAffine(docChiffre, maxKeys=10, showGraph=False):
-    docChiffreBin = Binaire603.bin603DepuisFichier(os.listdir()[1]+"/txt/"+docChiffre+".TXT")
+    docChiffreBin = Binaire603.bin603DepuisFichier("./txt/"+docChiffre+".TXT")
     if docChiffre[-1] == "1":
-        docDechiffre = Binaire603.bin603DepuisFichier(os.listdir()[1]+"/txt/"+docChiffre+"Decode.TXT")
+        docDechiffre = Binaire603.bin603DepuisFichier("./txt/"+docChiffre+"Decode.TXT")
     else:
-        docDechiffre = Binaire603.bin603DepuisFichier(os.listdir()[1]+"/txt/"+docChiffre+"D.TXT")
+        docDechiffre = Binaire603.bin603DepuisFichier("./txt/"+docChiffre+"D.TXT")
     if showGraph:
         docChiffreBin.afficheHistogrammeDesFrequences(titre="Fréquences des lettres dans " + docChiffre)
     frequenceDeChiffre = Binaire603(docDechiffre).lFrequences()
@@ -43,7 +43,7 @@ def decryptDecalageOrAffine(docChiffre, maxKeys=10, showGraph=False):
 """
     Problème avec résolution de l'équation afin de retrouver les valeurs a et b pour le chiffrage affine
 """
-binChiffre = Binaire603.bin603DepuisFichier(os.listdir()[1]+"/txt/"+"Chiffre2"+".TXT")
+binChiffre = Binaire603.bin603DepuisFichier("./txt/"+"Chiffre2"+".TXT")
 
 lf = binChiffre.lFrequences()
 lbTries=sorted([k for k in range(256)], key=lambda b:lf[b],reverse=True)
@@ -150,7 +150,7 @@ docChiffres = ["Chiffre1", "Chiffre2", "Chiffre3", "Chiffre4"]
 
 for docChiffre in docChiffres:
     if docChiffre[-1] == "3":
-        docChiffreBin = Binaire603.bin603DepuisFichier(os.listdir()[1]+"/txt/"+docChiffre+".TXT")
+        docChiffreBin = Binaire603.bin603DepuisFichier("./txt/"+docChiffre+".TXT")
         #print(indice_de_coincidence(docChiffreBin))
         #print(key_lengths(docChiffreBin, nmax=30))
         show_indices_graph(docChiffreBin, 20)
@@ -166,9 +166,9 @@ for docChiffre in docChiffres:
         print("Chiffreur par Decalage ou Affine", docChiffre)
         decryptDecalageOrAffine(docChiffre, 10, True)
     if docChiffre[-1] == "1":
-        docDechiffreBin = Binaire603.bin603DepuisFichier(os.listdir()[1]+"/txt/"+docChiffre+"Decode.TXT")
+        docDechiffreBin = Binaire603.bin603DepuisFichier("./txt/"+docChiffre+"Decode.TXT")
     else:
-        docDechiffreBin = Binaire603.bin603DepuisFichier(os.listdir()[1]+"/txt/"+docChiffre+"D.TXT")
+        docDechiffreBin = Binaire603.bin603DepuisFichier("./txt/"+docChiffre+"D.TXT")
     docDechiffreBin.afficheHistogrammeDesFrequences(titre="Fréquences des lettres déchiffrés dans " + docChiffre)
 
 #docDechiffre = ["Chiffre1Decode", "Chiffre2D", "Chiffre3D", "Chiffre4D"]
